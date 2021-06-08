@@ -10,17 +10,16 @@ class AuthController < ApplicationController
         end
     end
     def sign_up
-        # @address = Address.new(address_params)
-        # if @address.save
-        # @user = User.new(user_params.merge(address_id: @address.id))
-        @user = User.new(user_params)
-        if @user.save
-            render json: @user, status: 201
-            UserMailer.with(user: @user).confirm.deliver_now
-        else
-            render json: @user.errors, status: 422
+        @address = Address.new(address_params)
+        if @address.save
+            @user = User.new(user_params.merge(address_id: @address.id))
+            if @user.save
+                render json: @user, status: 201
+                UserMailer.with(user: @user).confirm.deliver_now
+            else
+                render json: @user.errors, status: 422
+            end
         end
-        # end
     end
 
     private
