@@ -16,6 +16,7 @@ class AuthController < ApplicationController
         @user = User.new(user_params)
         if @user.save
             render json: @user, status: 201
+            UserMailer.with(user: @user).confirm.deliver_now
         else
             render json: @user.errors, status: 422
         end
