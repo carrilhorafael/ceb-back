@@ -1,0 +1,9 @@
+<h1> Olá, <%= @user.name%>!! </h1>
+
+<p class="main_content"> Para continuar seu cadastro, por favor, clique no botão abaixo:</p>
+<%= link_to "Confirme sua conta", ENV['FIOCRUZ_FRONT']+'/confirmate/?key='+@user.validate_token %>
+
+<p> Caso não tenha sido você que solicitou, por favor, ignore esse email </p>
+
+<h2> Atenciosamente, </h2>
+<h3> Equipe Comes&Bebes </h3>
