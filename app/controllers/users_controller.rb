@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
   # # POST /users
   def deliverman
-    @deliverman = Deliverman.create(deliverman_params.merge(user_id: 1))
+    @deliverman = Deliverman.create(deliverman_params.merge(user_id: current_user.id))
 
     if @deliverman.save
       render json: @deliverman
