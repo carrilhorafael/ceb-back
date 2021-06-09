@@ -3,7 +3,7 @@
 <h2> Bem vindo ao Comes&Bebes </h2>
 
 <p class="main_content"> Para continuar seu cadastro, por favor, clique no botão abaixo:</p>
-<%= link_to "Confirme sua conta", ENV['FIOCRUZ_FRONT']+'/confirmate/?key='+@user.validation_token %>
+<%= link_to "Confirme sua conta", 'localhost:3000/confirmate/?key='+@user.validation_token %>
 
 <p> Caso não tenha sido você que solicitou, por favor, ignore esse email </p>
 
