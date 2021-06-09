@@ -28,8 +28,8 @@ class UserMailer < ApplicationMailer
   #   en.user_mailer.repeat_token.subject
   #
   def repeat_token
-    @greeting = "Hi"
+    @user = params[:user]
 
-    mail to: "to@example.org"
+    mail(to: @user.email, subject:"Confirme sua conta no Comes&Bebes")
   end
 end
