@@ -8,7 +8,8 @@ class User < ApplicationRecord
     validates :cpf, format: {with: /\b\d{3}\.\d{3}\.\d{3}-\d{2}\z/, message: "Utilize um cpf valido. Exemplo: 000.000.000-00"}
     validates :phone, format: {with: /(\(?\d{2}\)?\s)?(\d{4,5}\-\d{4})/, message: "Utilize um telefone valido. Exemplo: (21) 90000-0000"}
     belongs_to :address
-
+    has_one :deliverman
+    
     enum role: {
         "Administrador": 0,
         "Cliente": 1,
@@ -43,7 +44,6 @@ class User < ApplicationRecord
         end
         self.has_validated
     end
-    
     def login!(password)
         if self.has_validated 
             if self.authenticate(password)
