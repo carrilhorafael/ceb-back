@@ -4,7 +4,7 @@ class AuthController < ApplicationController
         @user = User.find_by!(cpf: params[:user][:credential]) if @user.nil?
         if @user&.authenticate(params[:user][:password])
             token = JsonWebToken.encode({user_id: @user.id})
-            render json: {token: token, user: @user}
+            render json: {token: token, user: UserSerializer.new(@user)}
         else
             render json: {error: "Não foi possível fazer o login"}, status: 401
         end
@@ -36,7 +36,11 @@ class AuthController < ApplicationController
     def reset
         if params[:validation_token].present?
             @user = User.find_by(validation_token: params[:validation_token])
-            if @user&.update(password: params[:password], password_confirmation: params[:password_confirmation])
+            if @user&.update(
+                validation_token: nil,
+                validation_token_expiry_at: nil,
+                password: params[:password], 
+                password_confirmation: params[:password_confirmation])
                 render json: @user
             else
                 render json: @user.errors, status: 422
