@@ -13,7 +13,7 @@ class AuthController < ApplicationController
                 render json: {token: token, user: UserSerializer.new(@user)}
             when "Cliente"
                 render json: {token: token, user: UserSerializer.new(@user)}
-            when "Dono de Restaurante"
+            when "Dono de restaurante"
                 render json: {token: token, user: UserSerializer.new(@user), show_register_restaurant: @user.restaurant.nil?}
             end
         else
@@ -50,7 +50,7 @@ class AuthController < ApplicationController
             if @user&.update(
                 validation_token: nil,
                 validation_token_expiry_at: nil,
-                has_validated: true
+                has_validated: true,
                 password: params[:password], 
                 password_confirmation: params[:password_confirmation])
                 render json: @user

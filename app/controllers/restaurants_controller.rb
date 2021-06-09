@@ -15,7 +15,8 @@ class RestaurantsController < ApplicationController
 
   # POST /restaurants
   def create
-    @restaurant = Restaurant.new(restaurant_params)
+    
+    @restaurant = Restaurant.new(restaurant_params.merge(user_id: current_user.id))
 
     if @restaurant.save
       render json: @restaurant, status: :created, location: @restaurant
@@ -46,6 +47,6 @@ class RestaurantsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def restaurant_params
-      params.require(:restaurant).permit(:name, :open_at, :close_at, :owner_id)
+      params.require(:restaurant).permit(:name, :cnpj, :open_at, :close_at)
     end
 end
