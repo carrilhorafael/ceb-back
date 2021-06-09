@@ -1,7 +1,7 @@
 <h1> Olá, <%= @user.name%>!! </h1>
 
 <p class="main_content"> Se você esqueceu a senha de sua conta, por favor, cliue no botão abaixo:</p>
-<%= link_to "Trocar a senha", 'localhost:3000/forgot_password/?key='+@user.validation_token %>
+<%= link_to "Trocar a senha", 'http://localhost:3000/forgot_password/?key='+@user.validation_token %>
 
 <p> Caso não tenha sido você que solicitou, por favor, ignore esse email </p>
 

@@ -17,9 +17,9 @@ class UserMailer < ApplicationMailer
   #   en.user_mailer.forgot.subject
   #
   def forgot
-    @greeting = "Hi"
+    @user = params[:user]
 
-    mail to: "to@example.org"
+    mail(to: @user.email, subject:"Esqueci minha senha no Comes&Bebes")
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
