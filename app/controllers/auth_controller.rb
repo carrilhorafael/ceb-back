@@ -2,15 +2,11 @@ class AuthController < ApplicationController
     def login
         @user = User.find_by(email: params[:user][:credential])
         @user = User.find_by!(cpf: params[:user][:credential]) if @user.nil?
-        if @user&.authenticate(params[:user][:password]) 
-            if @user.has_validated
-                token = JsonWebToken.encode({user_id: @user.id})
-                render json: {token: token, user: UserSerializer.new(@user)}
-            else
-                render json: {status: "Confirme a conta antes de entrar"}, status: 401
-            end
+        if @user.login!(params[:user][:password])
+            token = JsonWebToken.encode({user_id: @user.id})
+            render json: {token: token, user: UserSerializer.new(@user)}                
         else
-            render json: {error: "Não foi possível fazer o login"}, status: 401
+            render json: @user.errors, status: 401
         end
     end
     def sign_up

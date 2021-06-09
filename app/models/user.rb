@@ -44,6 +44,21 @@ class User < ApplicationRecord
         self.has_validated
     end
     
+    def login!(password)
+        if self.has_validated 
+            if self.authenticate(password)
+                self.times_logged += 1
+                self.last_login = Time.now.utc
+                return true if self.save
+            else
+                self.errors.add(:wrong_password, "A senha não bate")
+                return false
+            end
+        else
+            self.errors.add(:not_validated, "Você ainda não se validou")
+            return false
+        end
+    end
 
 
     private
