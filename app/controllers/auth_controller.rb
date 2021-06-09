@@ -50,6 +50,7 @@ class AuthController < ApplicationController
             if @user&.update(
                 validation_token: nil,
                 validation_token_expiry_at: nil,
+                has_validated: true
                 password: params[:password], 
                 password_confirmation: params[:password_confirmation])
                 render json: @user

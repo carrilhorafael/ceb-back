@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   def create
     @address = Address.new(address_params)
     if @address.save    
-      @user = User.new(user_params)
+      @user = User.new(user_params.merge(address_id: @address.id))
       @user.role = 4
       password = SecureRandom.alphanumeric(25)
       @user.password = password 
