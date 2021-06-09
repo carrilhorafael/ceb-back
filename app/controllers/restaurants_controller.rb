@@ -17,8 +17,11 @@ class RestaurantsController < ApplicationController
   def create
     @address = Address.new(address_params)
     if @address.save
-      @restaurant = Restaurant.new(restaurant_params.merge(address_id: @address.id, owner_id: current_user.id))
+      @restaurant = Restaurant.new(restaurant_params.except(:work_days).merge(address_id: @address.id, owner_id: current_user.id))
       if @restaurant.save
+        restaurant_params[:work_days].each do |day|
+          WorkDay.create(restaurant_id: @restaurant.id, day_id: day)
+        end
         render json: @restaurant, status: :created, location: @restaurant
       else
         render json: @restaurant.errors, status: :unprocessable_entity
@@ -50,6 +53,6 @@ class RestaurantsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def restaurant_params
-      params.require(:restaurant).permit(:name, :cnpj, :open_at, :close_at, :days)
+      params.require(:restaurant).permit(:name, :cnpj, :open_at, :close_at, :work_days)
     end
 end
