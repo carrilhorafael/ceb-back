@@ -49,7 +49,7 @@ class AuthController < ApplicationController
         if params[:validation_token].present?
             @user = User.find_by(validation_token: params[:validation_token])
             if @user&.confirm_user
-                render json: {status: "ok"}, status: 200
+                render json: {status: "ok"}
             else
                 render json: {error: "Não foi possivel confirmar o usuário, o token já expirou"}, status: 422
             end
@@ -61,6 +61,10 @@ class AuthController < ApplicationController
         @user = User.find_by(email: params[:credential])
         @user = User.find_by(cpf: params[:credential]) if @user.nil?
         if @user&.send_confirmation_token("resend")
+            render json: {status: "ok"}
+        else
+            render json: {error: "Não foi possivel localizar o usuário"}, status: 422
+        end
     end
 
     private
