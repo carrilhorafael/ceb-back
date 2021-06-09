@@ -2,17 +2,28 @@ class AuthController < ApplicationController
     def login
         @user = User.find_by(email: params[:user][:credential])
         @user = User.find_by!(cpf: params[:user][:credential]) if @user.nil?
-        if @user&.authenticate(params[:user][:password])
+        if @user.login!(params[:user][:password])
             token = JsonWebToken.encode({user_id: @user.id})
-            render json: {token: token, user: UserSerializer.new(@user)}
+            case @user.role
+            when "Administrador"
+                render json: {token: token, user: UserSerializer.new(@user)}
+            when "Entregador (Em validação)"
+                render json: {token: token, user: UserSerializer.new(@user), show_update_modal: @user.deliverman.nil?}
+            when "Entregador"
+                render json: {token: token, user: UserSerializer.new(@user)}
+            when "Cliente"
+                render json: {token: token, user: UserSerializer.new(@user)}
+            when "Dono de Restaurante"
+                render json: {token: token, user: UserSerializer.new(@user)}
+            end
         else
-            render json: {error: "Não foi possível fazer o login"}, status: 401
+            render json: @user.errors, status: 401
         end
     end
     def sign_up
         @address = Address.new(address_params)
         if @address.save
-            if user_params[:role] != 1 && user_params[:role] != 2
+            if user_params[:role] == 1 || user_params[:role] == 2
                 @user = User.new(user_params.merge(address_id: @address.id))
                 if @user.save
                     render json: @user, status: 201
@@ -20,7 +31,7 @@ class AuthController < ApplicationController
                     render json: @user.errors, status: 422
                 end
             else
-                render json: {error: "Você não pode criar um usuário dessa role"}, status: 403
+                render json: {error: "Você não pode criar um usuário dessa role"}, status: 401
             end
         end
     end

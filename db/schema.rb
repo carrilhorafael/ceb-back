@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_08_234042) do
+ActiveRecord::Schema.define(version: 2021_06_09_171428) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -19,6 +19,15 @@ ActiveRecord::Schema.define(version: 2021_06_08_234042) do
     t.string "state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "delivermen", force: :cascade do |t|
+    t.string "cnh"
+    t.string "vehicle"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_delivermen_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -34,8 +43,11 @@ ActiveRecord::Schema.define(version: 2021_06_08_234042) do
     t.string "validation_token"
     t.boolean "has_validated", default: false
     t.datetime "validation_token_expiry_at"
+    t.integer "times_logged", default: 0, null: false
+    t.datetime "last_login"
     t.index ["address_id"], name: "index_users_on_address_id"
   end
 
+  add_foreign_key "delivermen", "users"
   add_foreign_key "users", "addresses"
 end
