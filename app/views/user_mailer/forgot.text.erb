@@ -1,3 +1,11 @@
-User#forgot
+Olá, <%= @user.name%>!!
 
-<%= @greeting %>, find me in app/views/user_mailer/forgot.text.erb
+Bem vindo ao Comes&Bebes
+
+Para continuar seu cadastro, por favor, clique no botão abaixo:
+<%= link_to "Troque sua senha", 'http://localhost:3000/forgot_password/?key='+@user.validation_token %>
+
+Caso não tenha sido você que solicitou, por favor, ignore esse email
+
+Atenciosamente
+Equipe Comes&Bebes
