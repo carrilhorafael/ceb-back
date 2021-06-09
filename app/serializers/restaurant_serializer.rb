@@ -6,8 +6,13 @@ class RestaurantSerializer < ActiveModel::Serializer
     self.object.address.street + ", " + self.object.address.number + ", " + self.object.address.city + ", " + self.object.address.state  
   end
   def working_at
+    work_days_txt = []
+    self.object.work_days.each do |workday|
+      puts workday.day.day
+      work_days_txt.push(workday.day.day)
+    end
     byebug
-    "Aberto em " << "" 
+    "Aberto de " << self.object.open_at.hour << ":" 
   end
 
 end
