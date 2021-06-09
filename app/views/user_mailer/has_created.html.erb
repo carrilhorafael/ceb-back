@@ -1,0 +1,11 @@
+<h1> Olá, <%= @user.name%>!! </h1>
+
+<h2> Você foi cadastrado como Dono de Restaurante no Comes&Bebes </h2>
+
+<p class="main_content"> Clique no botão abaixo para confirmar sua conta e trocar sua senha padrão. No seu primeiro login, pediremos que você cadastre seu restaurante.</p>
+<%= link_to "Troque sua senha", 'http://localhost:3000/forgot_password/?key='+@user.validation_token %>
+
+<p> Caso não tenha sido você que solicitou, por favor, ignore esse email </p>
+
+<h2> Atenciosamente, </h2>
+<h3> Equipe Comes&Bebes </h3>

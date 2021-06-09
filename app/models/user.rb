@@ -27,7 +27,11 @@ class User < ApplicationRecord
         if self.save
             case switch
             when "confirm" 
-                UserMailer.with(user: self).confirm.deliver_now            
+                if self.role == "Dono de restaurante"
+                    UserMailer.with(user: self).has_created.deliver_now
+                else
+                    UserMailer.with(user: self).confirm.deliver_now
+                end            
             when "forgot"
                 UserMailer.with(user: self).forgot.deliver_now            
             when "resend"

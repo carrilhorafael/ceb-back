@@ -10,6 +10,11 @@ class UserMailer < ApplicationMailer
 
     mail(to: @user.email, subject:"Bem vindo ao Comes&Bebes")
   end
+  def has_created
+    @user = params[:user]
+
+    mail(to: @user.email, subject:"Você foi cadastrado no Comes&Bebes")
+  end
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
