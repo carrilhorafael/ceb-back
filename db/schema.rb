@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_08_224249) do
+ActiveRecord::Schema.define(version: 2021_06_08_234042) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -30,6 +30,10 @@ ActiveRecord::Schema.define(version: 2021_06_08_224249) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "address_id", null: false
+    t.integer "role"
+    t.string "validation_token"
+    t.boolean "has_validated", default: false
+    t.datetime "validation_token_expiry_at"
     t.index ["address_id"], name: "index_users_on_address_id"
   end
 
