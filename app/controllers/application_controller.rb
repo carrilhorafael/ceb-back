@@ -12,4 +12,7 @@ class ApplicationController < ActionController::API
         token = request.headers["Authorization"]
         token.split(" ").last if token.present?
     end
+    def address_params
+        params.require(:address).permit(:street, :number, :city, :state)
+    end
 end

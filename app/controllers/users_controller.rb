@@ -23,6 +23,25 @@ class UsersController < ApplicationController
       render json: @deliverman.errors, status: 422
     end
   end
+  
+  def create
+    @address = Address.new(address_params)
+    if @address.save    
+      @user = User.new(user_params.merge(address_id: @address.id))
+      @user.role = 4
+      password = SecureRandom.alphanumeric(25)
+      @user.password = password 
+      @user.password_confirmation = password 
+      if @user.save
+        render json: @user
+      else
+        render json: @user.errors, status: 422
+      end
+    else
+      render json: @address.errors, status: 422
+    end
+  
+  end
 
   # PATCH/PUT /users/1
   def update

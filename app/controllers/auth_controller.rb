@@ -13,8 +13,12 @@ class AuthController < ApplicationController
                 render json: {token: token, user: UserSerializer.new(@user)}
             when "Cliente"
                 render json: {token: token, user: UserSerializer.new(@user)}
-            when "Dono de Restaurante"
-                render json: {token: token, user: UserSerializer.new(@user)}
+            when "Dono de restaurante"
+                if @user.restaurant.nil?
+                    render json: {token: token, user: UserSerializer.new(@user), show_register_restaurant: true}
+                else
+                    render json: {token: token, user: UserSerializer.new(@user), restaurant: RestaurantSerializer.new(@user.restaurant)}
+                end
             end
         else
             render json: @user.errors, status: 401
@@ -50,6 +54,7 @@ class AuthController < ApplicationController
             if @user&.update(
                 validation_token: nil,
                 validation_token_expiry_at: nil,
+                has_validated: true,
                 password: params[:password], 
                 password_confirmation: params[:password_confirmation])
                 render json: @user
@@ -86,7 +91,5 @@ class AuthController < ApplicationController
         def user_params
             params.require(:user).permit(:name, :email, :password, :password_confirmation, :phone, :cpf, :role)
         end
-        def address_params
-            params.require(:address).permit(:street, :number, :city, :state)
-        end
+        
 end

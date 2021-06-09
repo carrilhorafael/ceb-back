@@ -9,6 +9,7 @@ class User < ApplicationRecord
     validates :phone, format: {with: /(\(?\d{2}\)?\s)?(\d{4,5}\-\d{4})/, message: "Utilize um telefone valido. Exemplo: (21) 90000-0000"}
     belongs_to :address
     has_one :deliverman
+    has_one :restaurant, foreign_key: :owner_id
 
     enum role: {
         "Administrador": 0,
@@ -26,7 +27,11 @@ class User < ApplicationRecord
         if self.save
             case switch
             when "confirm" 
-                UserMailer.with(user: self).confirm.deliver_now            
+                if self.role == "Dono de restaurante"
+                    UserMailer.with(user: self).has_created.deliver_now
+                else
+                    UserMailer.with(user: self).confirm.deliver_now
+                end            
             when "forgot"
                 UserMailer.with(user: self).forgot.deliver_now            
             when "resend"
