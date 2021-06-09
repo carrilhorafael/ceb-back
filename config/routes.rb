@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :restaurants
   post 'auth/sign_up'
   post 'auth/login'
   post 'auth/forgot'
