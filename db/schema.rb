@@ -10,13 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_09_175837) do
+ActiveRecord::Schema.define(version: 2021_06_09_192248) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
     t.string "number"
     t.string "city"
     t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "days", force: :cascade do |t|
+    t.string "day"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -33,12 +39,12 @@ ActiveRecord::Schema.define(version: 2021_06_09_175837) do
   create_table "restaurants", force: :cascade do |t|
     t.string "name"
     t.string "cnpj"
-    t.datetime "open_at"
-    t.datetime "close_at"
     t.integer "owner_id", null: false
     t.integer "address_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.time "open_at"
+    t.time "close_at"
     t.index ["address_id"], name: "index_restaurants_on_address_id"
     t.index ["owner_id"], name: "index_restaurants_on_owner_id"
   end
@@ -61,8 +67,19 @@ ActiveRecord::Schema.define(version: 2021_06_09_175837) do
     t.index ["address_id"], name: "index_users_on_address_id"
   end
 
+  create_table "work_days", force: :cascade do |t|
+    t.integer "restaurant_id", null: false
+    t.integer "day_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["day_id"], name: "index_work_days_on_day_id"
+    t.index ["restaurant_id"], name: "index_work_days_on_restaurant_id"
+  end
+
   add_foreign_key "delivermen", "users"
   add_foreign_key "restaurants", "addresses"
   add_foreign_key "restaurants", "users", column: "owner_id"
   add_foreign_key "users", "addresses"
+  add_foreign_key "work_days", "days"
+  add_foreign_key "work_days", "restaurants"
 end

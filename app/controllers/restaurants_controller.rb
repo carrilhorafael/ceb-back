@@ -17,7 +17,7 @@ class RestaurantsController < ApplicationController
   def create
     @address = Address.new(address_params)
     if @address.save
-      @restaurant = Restaurant.new(restaurant_params.merge(address_id: @address.id, user_id: current_user.id))
+      @restaurant = Restaurant.new(restaurant_params.merge(address_id: @address.id, owner_id: current_user.id))
       if @restaurant.save
         render json: @restaurant, status: :created, location: @restaurant
       else

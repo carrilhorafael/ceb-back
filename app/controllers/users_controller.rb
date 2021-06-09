@@ -70,7 +70,4 @@ class UsersController < ApplicationController
     def deliverman_params
       params.require(:deliverman).permit(:cnh, :vehicle)
     end
-    def address_params
-      params.require(:address).permit(:street, :number, :city, :state)
-  end
 end
