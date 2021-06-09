@@ -14,15 +14,15 @@ class UsersController < ApplicationController
   end
 
   # # POST /users
-  # def create
-  #   @user = User.new(user_params)
+  def deliverman
+    @deliverman = Deliverman.create(deliverman_params.merge(user_id: 1))
 
-  #   if @user.save
-  #     render json: @user, status: :created, location: @user
-  #   else
-  #     render json: @user.errors, status: :unprocessable_entity
-  #   end
-  # end
+    if @deliverman.save
+      render json: @deliverman
+    else
+      render json: @deliverman.errors, status: 422
+    end
+  end
 
   # PATCH/PUT /users/1
   def update
@@ -46,6 +46,9 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :password_digest, :email, :phone, :cpf)
+      params.require(:user).permit(:name, :email, :phone, :cpf)
+    end
+    def deliverman_params
+      params.require(:deliverman).permit(:cnh, :vehicle)
     end
 end
