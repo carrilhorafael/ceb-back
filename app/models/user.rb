@@ -1,7 +1,7 @@
 class User < ApplicationRecord
     has_secure_password
 
-    validates :name, :email, :cpf, :phone, presence: true
+    validates :name, :email, :role, :cpf, :phone, presence: true
     validates :password, :password_confirmation, presence: true, length: {minimum: 8}, if: :password
     validates :email, :cpf, uniqueness: true
     # validates :email, format: {with: /\b[A-Z0-9._%a-z\-]+@+[a-z]+.[a-z]{2,4}\z/, message: "Utilize o seu email da UFF. Exemplo: meuemail@id.uff.br"}
@@ -10,10 +10,11 @@ class User < ApplicationRecord
     belongs_to :address
 
     enum role: {
-        "Cliente":1,
-        "Entregador":2,
-        "Dono de restaurante":3,
-        "Administrador":4
+        "Administrador": 0,
+        "Cliente": 1,
+        "Entregador (Em validação)": 2,
+        "Entregador": 2,
+        "Dono de restaurante": 4,
     }
 
     after_create {send_confirmation_token("confirm")}

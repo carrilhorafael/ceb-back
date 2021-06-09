@@ -16,7 +16,7 @@ class AuthController < ApplicationController
     def sign_up
         @address = Address.new(address_params)
         if @address.save
-            if user_params[:role] != 1 && user_params[:role] != 2
+            if user_params[:role] == 1 || user_params[:role] == 2
                 @user = User.new(user_params.merge(address_id: @address.id))
                 if @user.save
                     render json: @user, status: 201
@@ -24,7 +24,7 @@ class AuthController < ApplicationController
                     render json: @user.errors, status: 422
                 end
             else
-                render json: {error: "Você não pode criar um usuário dessa role"}, status: 403
+                render json: {error: "Você não pode criar um usuário dessa role"}, status: 401
             end
         end
     end
