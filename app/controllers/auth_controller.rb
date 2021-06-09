@@ -14,7 +14,7 @@ class AuthController < ApplicationController
             when "Cliente"
                 render json: {token: token, user: UserSerializer.new(@user)}
             when "Dono de Restaurante"
-                render json: {token: token, user: UserSerializer.new(@user)}
+                render json: {token: token, user: UserSerializer.new(@user), show_register_restaurant: @user.restaurant.nil?}
             end
         else
             render json: @user.errors, status: 401
