@@ -9,12 +9,12 @@ class User < ApplicationRecord
     validates :phone, format: {with: /(\(?\d{2}\)?\s)?(\d{4,5}\-\d{4})/, message: "Utilize um telefone valido. Exemplo: (21) 90000-0000"}
     belongs_to :address
     has_one :deliverman
-    
+
     enum role: {
         "Administrador": 0,
         "Cliente": 1,
         "Entregador (Em validação)": 2,
-        "Entregador": 2,
+        "Entregador": 3,
         "Dono de restaurante": 4,
     }
 

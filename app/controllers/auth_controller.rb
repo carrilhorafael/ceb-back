@@ -4,7 +4,18 @@ class AuthController < ApplicationController
         @user = User.find_by!(cpf: params[:user][:credential]) if @user.nil?
         if @user.login!(params[:user][:password])
             token = JsonWebToken.encode({user_id: @user.id})
-            render json: {token: token, user: UserSerializer.new(@user)}                
+            case @user.role
+            when "Administrador"
+                render json: {token: token, user: UserSerializer.new(@user)}
+            when "Entregador (Em validação)"
+                render json: {token: token, user: UserSerializer.new(@user), show_update_modal: @user.deliverman.nil?}
+            when "Entregador"
+                render json: {token: token, user: UserSerializer.new(@user)}
+            when "Cliente"
+                render json: {token: token, user: UserSerializer.new(@user)}
+            when "Dono de Restaurante"
+                render json: {token: token, user: UserSerializer.new(@user)}
+            end
         else
             render json: @user.errors, status: 401
         end
